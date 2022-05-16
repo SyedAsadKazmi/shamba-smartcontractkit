@@ -18,25 +18,15 @@ contract ShambaGeoConsumer is ChainlinkClient {
         string coordinates;
     }
 
-    mapping(uint256 => Geometry) geometry;
+    mapping(uint256 => string) geometry_map;
 
-    function addGeometry(uint256 property_id, string memory coordinates)
-        public
-    {
-        Geometry memory g = Geometry({
-            property_id: property_id,
-            coordinates: coordinates
-        });
-
-        geometry[property_id] = g;
-    }
 
     function getGeometry(uint256 property_id)
         public
         view
-        returns (Geometry memory)
+        returns (string memory)
     {
-        return geometry[property_id];
+        return geometry_map[property_id];
     }
 
     function getCid(uint256 index) public view returns (string memory) {
@@ -63,7 +53,7 @@ contract ShambaGeoConsumer is ChainlinkClient {
         string memory image_scale,
         string memory start_date,
         string memory end_date,
-        uint256 geometry_length
+        Geometry[] memory geometry
     ) public {
         bytes32 specId = "2f92a2bc36b34aaa9316ee1b3ce84f23";
 
@@ -91,14 +81,17 @@ contract ShambaGeoConsumer is ChainlinkClient {
             '", "geometry":{"type":"FeatureCollection","features":['
         );
 
-        for (uint256 i = 0; i < geometry_length; i++) {
+        for (uint256 i = 0; i < geometry.length; i++) {
+
+            geometry_map[geometry[i].property_id] = geometry[i].coordinates;
+
             concatenated_data = concat(
                 concatenated_data,
                 '{"type":"Feature","properties":{"id":'
             );
             concatenated_data = concat(
                 concatenated_data,
-                Strings.toString(geometry[i + 1].property_id)
+                Strings.toString(geometry[i].property_id)
             );
             concatenated_data = concat(
                 concatenated_data,
@@ -106,11 +99,11 @@ contract ShambaGeoConsumer is ChainlinkClient {
             );
             concatenated_data = concat(
                 concatenated_data,
-                geometry[i + 1].coordinates
+                geometry[i].coordinates
             );
             concatenated_data = concat(concatenated_data, "}}");
 
-            if (i != geometry_length - 1) {
+            if (i != geometry.length - 1) {
                 concatenated_data = concat(concatenated_data, ",");
             }
         }
