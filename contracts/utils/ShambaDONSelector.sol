@@ -2,7 +2,7 @@
 pragma solidity ^0.8.7;
 
 contract ShambaDONSelector {
-    function fluxAggregatorAddress(uint DON_number) public pure returns (address) {
+    function fluxAggregatorAddress(uint DON_number) internal pure returns (address) {
         if (DON_number == 1) {
             return 0xa327d8f630E48C0522F44011F073D3804883A6E5;
         }
@@ -15,7 +15,7 @@ contract ShambaDONSelector {
 
     }
     
-    function numberOfNodes(uint DON_number) public pure returns (uint) {
+    function numberOfNodes(uint DON_number) internal pure returns (uint) {
         if (DON_number == 1) {
             return 3;
         }
@@ -27,7 +27,7 @@ contract ShambaDONSelector {
         }
     }
 
-    function networkOfDON(uint DON_number) public pure returns (string memory) {
+    function networkOfDON(uint DON_number) internal pure returns (string memory) {
         if (DON_number == 1) {
             return "Ethereum Kovan";
         }
