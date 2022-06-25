@@ -5,13 +5,13 @@ contract ShambaDONSelector {
 
     string[] dataStreamsList;
     
-    function fluxAggregatorAddress(uint DON_number, string memory data_stream) internal pure returns (address) {
+    function fluxAggregatorAddress(uint DON_number, string memory data_stream_code) internal pure returns (address) {
         if (DON_number == 1) {
 
-            if (compareStringsbyBytes(data_stream, "temperature_new-delhi")) {
+            if (compareStringsbyBytes(data_stream_code, "temperature_new-delhi")) {
                 return 0xa327d8f630E48C0522F44011F073D3804883A6E5;
             }
-            else if (compareStringsbyBytes(data_stream, "fire_riverside")) {
+            else if (compareStringsbyBytes(data_stream_code, "fire_riverside")) {
                 return 0xfebb68b8d8cdf8cd5B932CF80aDFf8ed7e76a9d1;
             }
             else {
@@ -21,7 +21,7 @@ contract ShambaDONSelector {
         }
 
         else if (DON_number == 2) {
-            if (compareStringsbyBytes(data_stream, "temperature_nairobi")) {
+            if (compareStringsbyBytes(data_stream_code, "temperature_nairobi")) {
                 return 0x0aCC582367Da6453ef609e490F219171ee1a0e41;
             }
             else {
@@ -31,7 +31,7 @@ contract ShambaDONSelector {
 
         else if (DON_number == 3) {
 
-            if (compareStringsbyBytes(data_stream, "air-quality_new-delhi")) {
+            if (compareStringsbyBytes(data_stream_code, "air-quality_new-delhi")) {
                 return 0x4b7c440b5e980Ae67bA801979cAbDb155976e6c1;
             }
             else {

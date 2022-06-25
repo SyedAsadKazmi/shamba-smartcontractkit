@@ -2,7 +2,7 @@
 pragma solidity ^0.8.7;
 
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
-import "ShambaDONSelector.sol";
+import "./ShambaDONSelector.sol";
 
 
 contract ShambaDataStream is ShambaDONSelector {
@@ -10,9 +10,12 @@ contract ShambaDataStream is ShambaDONSelector {
     AggregatorV3Interface internal dataStream;
     uint current_DON_number;
 
-    constructor(uint DON_number, string memory data_stream) {
+    /**
+     * Initialize with DON number and data stream code
+     */                                         
+    constructor(uint DON_number, string memory data_stream_code) {
         current_DON_number = DON_number;
-        dataStream = AggregatorV3Interface(ShambaDONSelector.fluxAggregatorAddress(DON_number, data_stream));
+        dataStream = AggregatorV3Interface(ShambaDONSelector.fluxAggregatorAddress(DON_number, data_stream_code));
     }
 
     /**
@@ -43,7 +46,11 @@ contract ShambaDataStream is ShambaDONSelector {
         return ShambaDONSelector.networkOfDON(current_DON_number);
     }
 
-    function availableDataStreams() public view returns (string[] memory) {
+    /**
+     * Returns the list of data streams provided by selected DON
+     */
+
+    function availableDataStreams() public returns (string[] memory) {
         return ShambaDONSelector.availableDataStreamsProvidedByDON(current_DON_number);
     }
 
