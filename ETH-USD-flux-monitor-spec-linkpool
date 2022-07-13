@@ -1,0 +1,20 @@
+type = "fluxmonitor"
+schemaVersion = 1
+name = "ETH-USD-flux-monitor-spec-linkpool"
+contractAddress = "0xE7e4043094aa52E562738E6C07e09812363B6619"
+threshold = 0.5
+idleTimerPeriod = "2m0s"
+idleTimerDisabled = true
+pollTimerPeriod = "1m0s"
+pollTimerDisabled = false
+drumbeatEnabled = true
+drumbeatSchedule = "CRON_TZ=UTC @every 5m"
+maxTaskDuration = "0s"
+observationSource = """
+    ds          [type="http" method=GET url="https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"]
+    ds_parse    [type="jsonparse" path="USD"]
+    ds_multiply [type="multiply" times=100]
+
+    ds -> ds_parse -> ds_multiply
+"""
+externalJobID = "1332b857-ca31-4252-9ece-db15821a1781"
