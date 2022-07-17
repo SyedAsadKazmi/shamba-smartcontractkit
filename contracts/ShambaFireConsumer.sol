@@ -7,7 +7,7 @@ import "./utils/ShambaOperatorSelector.sol";
 
 contract ShambaFireConsumer is ChainlinkClient, ShambaOperatorSelector {
     using Chainlink for Chainlink.Request;
-
+    using ShambaOperatorSelector for *;
     mapping(uint256 => uint256) private fire_data;
     string private cid;
     uint256 public total_oracle_calls = 0;
@@ -41,8 +41,8 @@ contract ShambaFireConsumer is ChainlinkClient, ShambaOperatorSelector {
 
     constructor(uint256 operator_number) {
         operatorNumber = operator_number;
-        setChainlinkToken(linkTokenContractAddress(operator_number));
-        setChainlinkOracle(operatorAddress(operator_number));
+        setChainlinkToken(ShambaOperatorSelector.linkTokenContractAddress(operator_number));
+        setChainlinkOracle(ShambaOperatorSelector.operatorAddress(operator_number));
     }
 
     function concat(string memory a, string memory b)
@@ -62,7 +62,7 @@ contract ShambaFireConsumer is ChainlinkClient, ShambaOperatorSelector {
         Geometry[] memory geometry
 
     ) public {
-        bytes32 specId = jobSpecId(operatorNumber, "fire-analysis");
+        bytes32 specId = ShambaOperatorSelector.jobSpecId(operatorNumber, "fire-analysis");
 
         uint256 payment = 1000000000000000000;
         Chainlink.Request memory req = buildChainlinkRequest(
