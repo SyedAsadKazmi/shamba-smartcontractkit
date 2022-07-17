@@ -4,46 +4,52 @@ pragma solidity ^0.8.7;
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "./ShambaDONSelector.sol";
 
-
-contract ShambaDataStream is ShambaDONSelector {
-
+contract ShambaDataStream {
     AggregatorV3Interface internal dataStream;
-    uint current_DON_number;
+    ShambaDONSelector internal shambaDONSelector;
+    uint256 current_DON_number;
+    string[] public dataStreams;
 
-    /**
-     * Initialize with DON number and data stream code
-     */                                         
-    constructor(uint DON_number, string memory data_stream_code) {
+    constructor(uint256 DON_number, string memory data_stream) {
         current_DON_number = DON_number;
-        dataStream = AggregatorV3Interface(ShambaDONSelector.fluxAggregatorAddress(DON_number, data_stream_code));
+        shambaDONSelector = ShambaDONSelector(
+            0x9e4630679d1e8f31734a983Ce1d96317841E8831
+        );
+        dataStream = AggregatorV3Interface(
+            shambaDONSelector.fluxAggregatorAddress(DON_number, data_stream)
+        );
     }
 
     /**
-     * Returns the latest temperature
+     * Returns the latest data
      */
-    function getLatestData() public view returns (int) {
+    function getLatestData() public view returns (int256) {
         (
-            /*uint80 roundID*/,
-            int data,
-            /*uint startedAt*/,
-            /*uint timeStamp*/,
+            ,
+            /*uint80 roundID*/
+            int256 data,
+            ,
+            ,
+
+        ) = /*uint startedAt*/
+            /*uint timeStamp*/
             /*uint80 answeredInRound*/
-        ) = dataStream.latestRoundData();
+            dataStream.latestRoundData();
         return data;
     }
 
     /**
      * Returns the number of nodes in selected DON
      */
-    function numberOfNodes() public view returns (uint) {
-        return ShambaDONSelector.numberOfNodes(current_DON_number);
+    function numberOfNodes() public view returns (uint256) {
+        return shambaDONSelector.numberOfNodes(current_DON_number);
     }
 
     /**
      * Returns the network of selected DON
      */
     function networkOfDON() public view returns (string memory) {
-        return ShambaDONSelector.networkOfDON(current_DON_number);
+        return shambaDONSelector.networkOfDON(current_DON_number);
     }
 
     /**
@@ -51,7 +57,9 @@ contract ShambaDataStream is ShambaDONSelector {
      */
 
     function availableDataStreams() public returns (string[] memory) {
-        return ShambaDONSelector.availableDataStreamsProvidedByDON(current_DON_number);
+        dataStreams = shambaDONSelector.availableDataStreamsProvidedByDON(
+            current_DON_number
+        );
+        return dataStreams;
     }
-
 }

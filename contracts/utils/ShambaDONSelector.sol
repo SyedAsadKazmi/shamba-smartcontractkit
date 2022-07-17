@@ -2,11 +2,10 @@
 pragma solidity ^0.8.7;
 
 library ShambaDONSelector {
-
     function fluxAggregatorAddress(
         uint256 DON_number,
         string memory data_stream_code
-    ) internal pure returns (address) {
+    ) external pure returns (address) {
         if (DON_number == 1) {
             if (
                 compareStringsbyBytes(data_stream_code, "temperature_new-delhi")
@@ -40,7 +39,7 @@ library ShambaDONSelector {
         }
     }
 
-    function numberOfNodes(uint256 DON_number) internal pure returns (uint256) {
+    function numberOfNodes(uint256 DON_number) external pure returns (uint256) {
         if (DON_number == 1) {
             return 3;
         } else if (DON_number == 2) {
@@ -53,7 +52,7 @@ library ShambaDONSelector {
     }
 
     function networkOfDON(uint256 DON_number)
-        internal
+        external
         pure
         returns (string memory)
     {
@@ -69,7 +68,7 @@ library ShambaDONSelector {
     }
 
     function availableDataStreamsProvidedByDON(uint256 DON_number)
-        internal 
+        external
         pure
         returns (string[] memory)
     {
