@@ -5,9 +5,9 @@ import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./utils/ShambaOperatorSelector.sol";
 
-contract ShambaGeoConsumer is ChainlinkClient {
+contract ShambaGeoConsumer is ChainlinkClient, ShambaOperatorSelector {
     using Chainlink for Chainlink.Request;
-    using ShambaOperatorSelector for *;
+    ShambaOperatorSelector shambaOperatorSelector;
     int256 private geostats_data;
     string private cid;
     uint256 public total_oracle_calls = 0;
@@ -37,8 +37,8 @@ contract ShambaGeoConsumer is ChainlinkClient {
 
     constructor(uint256 operator_number) {
         operatorNumber = operator_number;
-        setChainlinkToken(ShambaOperatorSelector.linkTokenContractAddress(operator_number));
-        setChainlinkOracle(ShambaOperatorSelector.operatorAddress(operator_number));
+        setChainlinkToken(shambaOperatorSelector.linkTokenContractAddress(operator_number));
+        setChainlinkOracle(shambaOperatorSelector.operatorAddress(operator_number));
     }
 
     function concat(string memory a, string memory b)
@@ -58,7 +58,7 @@ contract ShambaGeoConsumer is ChainlinkClient {
         string memory end_date,
         Geometry[] memory geometry
     ) public {
-        bytes32 specId = ShambaOperatorSelector.jobSpecId(operatorNumber, "fire-analysis");
+        bytes32 specId = shambaOperatorSelector.jobSpecId(operatorNumber, "fire-analysis");
 
         uint256 payment = 1000000000000000000;
         Chainlink.Request memory req = buildChainlinkRequest(
