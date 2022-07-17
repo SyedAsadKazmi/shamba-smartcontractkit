@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
-contract ShambaOperatorSelector {
+library ShambaOperatorSelector {
     function operatorAddress(uint256 operator_number)
         external
         pure
