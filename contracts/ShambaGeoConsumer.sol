@@ -5,7 +5,7 @@ import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./utils/ShambaOperatorSelector.sol";
 
-contract ShambaGeoConsumer is ChainlinkClient {
+contract ShambaGeoConsumer is ChainlinkClient, ShambaOperatorSelector {
     using Chainlink for Chainlink.Request;
 
     int256 private geostats_data;

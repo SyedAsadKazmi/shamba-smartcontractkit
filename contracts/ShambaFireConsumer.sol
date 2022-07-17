@@ -5,7 +5,7 @@ import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./utils/ShambaOperatorSelector.sol";
 
-contract ShambaFireConsumer is ChainlinkClient {
+contract ShambaFireConsumer is ChainlinkClient, ShambaOperatorSelector {
     using Chainlink for Chainlink.Request;
 
     mapping(uint256 => uint256) private fire_data;

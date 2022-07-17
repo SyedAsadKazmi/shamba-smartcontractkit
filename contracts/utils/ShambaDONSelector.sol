@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
-library ShambaDONSelector {
+contract ShambaDONSelector {
     function fluxAggregatorAddress(
         uint256 DON_number,
         string memory data_stream_code
